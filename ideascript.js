@@ -69,3 +69,13 @@ function displayIdeaGroupDetails() {
         })
         .catch(error => console.error('Error:', error));
 }
+
+
+function loadLocalScript() {
+  var script = document.createElement('script');
+  script.src = 'local.js';
+  document.head.appendChild(script);
+}
+
+// Call the function to load and execute the local.js file
+loadLocalScript();
