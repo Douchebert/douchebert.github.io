@@ -7,9 +7,13 @@
 </head>
 <body>
 
-<select id="idea-group-select">
+<select id="idea-group-select" onchange="displayIdeaGroupDetails(this.value)">
     <!-- Options will be added here by JavaScript -->
 </select>
+
+<div id="idea-group-details">
+    <!-- Idea group details will be displayed here -->
+</div>
 
 <script>
     // URL of the ideas file
@@ -37,6 +41,30 @@
             }
         })
         .catch(error => console.error('Error:', error));
+
+    function displayIdeaGroupDetails(ideaGroupName) {
+        // Fetch the file again
+        fetch(url)
+            .then(response => response.text())
+            .then(text => {
+                // Find the start and end of the selected idea group's details
+                var start = text.indexOf(ideaGroupName + ' = {');
+                var end = text.indexOf('_ideas = {', start + 1);
+                if (end === -1) {
+                    end = text.length;
+                }
+
+                // Extract the idea group's details
+                var details = text.slice(start, end);
+
+                // Remove the "ai_will_do" part
+                details = details.replace(/ai_will_do = {[^}]*}/, '');
+
+                // Display the details
+                document.getElementById('idea-group-details').textContent = details;
+            })
+            .catch(error => console.error('Error:', error));
+    }
 </script>
 
 </body>
