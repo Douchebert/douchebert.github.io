@@ -21,6 +21,9 @@ fetch(url)
             option.text = ideaGroups[i];
             select.appendChild(option);
         }
+
+        // Call the function to load and execute the local.js file
+        loadLocalScript();
     })
     .catch(error => console.error('Error:', error));
 
@@ -70,12 +73,8 @@ function displayIdeaGroupDetails() {
         .catch(error => console.error('Error:', error));
 }
 
-
 function loadLocalScript() {
   var script = document.createElement('script');
   script.src = 'local.js';
   document.head.appendChild(script);
 }
-
-// Call the function to load and execute the local.js file
-loadLocalScript();
