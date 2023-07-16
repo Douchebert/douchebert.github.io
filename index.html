@@ -7,7 +7,7 @@
 </head>
 <body>
 
-<h1>Version 0.008</h1>
+<h1>Version 0.009</h1>
 
 <select id="idea-group-select" onchange="displayIdeaGroupDetails(this.value)">
     <!-- Options will be added here by JavaScript -->
@@ -52,12 +52,28 @@
             // Find the start of the selected idea group's details
             var start = text.indexOf(ideaGroupName + ' = {');
 
-            // Use a regular expression to find the start of the next idea group
-            var nextMatch = text.slice(start).match(/\n[a-z_]+_ideas = {/);
-            var end = nextMatch ? start + nextMatch.index : text.length;
+            // Count the number of opening and closing curly braces
+            var openingBraceCount = 0;
+            var closingBraceCount = 0;
+            var i = start;
+
+            while (i < text.length) {
+                if (text[i] === '{') {
+                    openingBraceCount++;
+                } else if (text[i] === '}') {
+                    closingBraceCount++;
+                }
+
+                // Check if the idea group's details have ended
+                if (openingBraceCount > 0 && openingBraceCount === closingBraceCount) {
+                    break;
+                }
+
+                i++;
+            }
 
             // Extract the idea group's details
-            var details = text.slice(start, end);
+            var details = text.slice(start, i + 1);
 
             // Remove the "ai_will_do" part
             details = details.replace(/ai_will_do = {[^}]*}/, '');
