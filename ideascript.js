@@ -72,6 +72,9 @@ function displayIdeaGroupDetails() {
 
             // Display the details
             document.getElementById('idea-group-details').textContent = details;
+			
+			   // Replace specific case-sensitive words with their replacements
+            details = replaceWords(details);
         })
         .catch(error => console.error('Error:', error));
 }
