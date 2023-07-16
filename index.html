@@ -19,6 +19,7 @@
     // URL of the ideas file
     var url = 'https://douchebert.github.io/Ideas/00_basic_ideas.txt';  // Replace with the actual URL
 
+
     // Fetch the file
     fetch(url)
         .then(response => response.text())
@@ -49,7 +50,7 @@
             .then(text => {
                 // Find the start and end of the selected idea group's details
                 var start = text.indexOf(ideaGroupName + ' = {');
-                var end = text.indexOf('_ideas = {', start + 1);
+                var end = text.indexOf('\n\n', start + 1);
                 if (end === -1) {
                     end = text.length;
                 }
