@@ -7,7 +7,7 @@
 </head>
 <body>
 
-<h1>Version 0.026</h1>
+<h1>Version 0.027</h1>
 
 <script src="local.js"></script> <!-- Load local.js first -->
 
@@ -21,6 +21,22 @@
 </div>
 
 <script src="ideascript.js"></script>
+
+<!-- Add the verification message element -->
+<div id="verification-message"></div>
+
+<!-- Add the verification script -->
+<script>
+  var policiesLoaded = false;
+  var powersAndIdeasLoaded = false;
+
+  function verifyFilesLoaded() {
+    if (policiesLoaded && powersAndIdeasLoaded) {
+      var verificationMessage = document.getElementById('verification-message');
+      verificationMessage.textContent = 'Policies and Powers/Ideas files loaded successfully.';
+    }
+  }
+</script>
 
 </body>
 </html>
