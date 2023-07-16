@@ -45,28 +45,29 @@
         .catch(error => console.error('Error:', error));
 
     function displayIdeaGroupDetails(ideaGroupName) {
-        // Fetch the file again
-        fetch(url)
-            .then(response => response.text())
-            .then(text => {
-                // Find the start of the selected idea group's details
-                var start = text.indexOf(ideaGroupName + ' = {');
+    // Fetch the file again
+    fetch(url)
+        .then(response => response.text())
+        .then(text => {
+            // Find the start of the selected idea group's details
+            var start = text.indexOf(ideaGroupName + ' = {');
 
-                // Use a regular expression to find the end of the selected idea group's details
-                var endMatch = text.slice(start).match(/\n\n[^a-z_]/);
-                var end = endMatch ? start + endMatch.index : text.length;
+            // Use a regular expression to find the start of the next idea group
+            var nextMatch = text.slice(start).match(/\n[a-z_]+_ideas = {/);
+            var end = nextMatch ? start + nextMatch.index : text.length;
 
-                // Extract the idea group's details
-                var details = text.slice(start, end);
+            // Extract the idea group's details
+            var details = text.slice(start, end);
 
-                // Remove the "ai_will_do" part
-                details = details.replace(/ai_will_do = {[^}]*}/, '');
+            // Remove the "ai_will_do" part
+            details = details.replace(/ai_will_do = {[^}]*}/, '');
 
-                // Display the details
-                document.getElementById('idea-group-details').textContent = details;
-            })
-            .catch(error => console.error('Error:', error));
-    }
+            // Display the details
+            document.getElementById('idea-group-details').textContent = details;
+        })
+        .catch(error => console.error('Error:', error));
+}
+
 </script>
 
 </body>
