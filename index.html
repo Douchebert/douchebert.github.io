@@ -48,12 +48,12 @@
         fetch(url)
             .then(response => response.text())
             .then(text => {
-                // Find the start and end of the selected idea group's details
+                // Find the start of the selected idea group's details
                 var start = text.indexOf(ideaGroupName + ' = {');
-                var end = text.indexOf('\n\n', start + 1);
-                if (end === -1) {
-                    end = text.length;
-                }
+
+                // Use a regular expression to find the end of the selected idea group's details
+                var endMatch = text.slice(start).match(/\n\n[^a-z_]/);
+                var end = endMatch ? start + endMatch.index : text.length;
 
                 // Extract the idea group's details
                 var details = text.slice(start, end);
