@@ -7,7 +7,7 @@
 </head>
 <body>
 
-<h1>Version 0.005</h1>
+<h1>Version 0.006</h1>
 
 <select id="idea-group-select" onchange="displayIdeaGroupDetails(this.value)">
     <!-- Options will be added here by JavaScript -->
@@ -25,11 +25,11 @@
     fetch(url)
         .then(response => response.text())
         .then(text => {
-            // Log the entire content of the text file to the console
-            console.log(text);
-
             // Split the text into idea groups
             var ideaGroups = text.split(/\n\n(?=[a-z_]+_ideas = {)/);
+
+            // Log the array of idea groups to the console
+            console.log(ideaGroups);
 
             // Get the idea group names
             var ideaGroupNames = ideaGroups.map(group => group.match(/[a-z_]+(?= = {)/)[0]);
