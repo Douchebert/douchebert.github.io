@@ -64,8 +64,8 @@ function displayIdeaGroupDetails() {
             // Remove the "ai_will_do" part
             details = details.replace(/ai_will_do[\s\S]*/, '');
 
-            // Remove curly brackets
-            details = details.replace(/[\{\}]/g, '');
+            // Remove curly brackets - commented out until I can figure out groupings.
+            //details = details.replace(/[\{\}]/g, '');
 
             // Replace specific case-sensitive words with their replacements
             details = replaceWords(details);
