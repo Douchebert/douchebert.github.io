@@ -7,7 +7,7 @@
 </head>
 <body>
 
-<h1>Version 0.012</h1>
+<h1>Version 0.013</h1>
 
 <select id="idea-group-select" onchange="displayIdeaGroupDetails(this.value)">
     <!-- Options will be added here by JavaScript -->
@@ -76,7 +76,7 @@
             var details = text.slice(start, i + 1);
 
             // Remove the "ai_will_do" part
-            details = details.replace(/ai_will_do[^}]+}/, '');
+            details = details.replace(/ai_will_do[\s\S]*/, '');
 
             // Display the details
             document.getElementById('idea-group-details').textContent = details;
