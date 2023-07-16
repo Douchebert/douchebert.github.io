@@ -63,9 +63,9 @@ function displayIdeaGroupDetails() {
 
             // Remove the "ai_will_do" part
             details = details.replace(/ai_will_do[\s\S]*/, '');
-			
-			// Remove curly brackets.
-			details = details.replace(/[\{\}]/g, '');
+
+            // Remove curly brackets.
+            details = details.replace(/[\{\}]/g, '');
 
             // Display the details
             document.getElementById('idea-group-details').textContent = details;
@@ -74,7 +74,11 @@ function displayIdeaGroupDetails() {
 }
 
 function loadLocalScript() {
-  var script = document.createElement('script');
-  script.src = 'local.js';
-  document.head.appendChild(script);
+    var script = document.createElement('script');
+    script.src = 'local.js';
+    script.onload = function() {
+        // After local.js has finished loading, call displayIdeaGroupDetails()
+        displayIdeaGroupDetails();
+    };
+    document.head.appendChild(script);
 }
