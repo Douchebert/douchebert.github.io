@@ -1,3 +1,6 @@
+// Standardized regex pattern for replacements
+var replacePattern = /([a-zA-Z_]+):0\s+"([^"]+)"/g;
+
 // Replace specific case-sensitive words with their replacements
 function replaceWords(text) {
   text = text.replace(/\bADM\b/g, "Administrative");
@@ -20,9 +23,11 @@ function loadPoliciesFile() {
 
 // Function to process the policies text
 function processPoliciesText(text) {
+  // Apply the standardized replacements
+  text = text.replace(replacePattern, '$2');
+
   // Process the policies text here
-  // You can apply any necessary replacements or transformations to the text
-  // For example, you can replace specific patterns or perform regex operations
+  // You can apply any additional replacements or transformations to the text
 
   // Return the processed text
   return text;
@@ -42,9 +47,11 @@ function loadPowersAndIdeasFile() {
 
 // Function to process the powers and ideas text
 function processPowersAndIdeasText(text) {
+  // Apply the standardized replacements
+  text = text.replace(replacePattern, '$2');
+
   // Process the powers and ideas text here
-  // You can apply any necessary replacements or transformations to the text
-  // For example, you can replace specific patterns or perform regex operations
+  // You can apply any additional replacements or transformations to the text
 
   // Return the processed text
   return text;
@@ -55,11 +62,3 @@ loadPoliciesFile();
 
 // Call the function to load and process the powers and ideas file
 loadPowersAndIdeasFile();
-
-// Explanation:
-// The `replaceWords()` function replaces specific case-sensitive words with their replacements.
-// The `loadPoliciesFile()` function fetches and processes the policies file.
-// The `processPoliciesText()` function can be customized to perform operations on the policies text.
-// The `loadPowersAndIdeasFile()` function fetches and processes the powers and ideas file.
-// The `processPowersAndIdeasText()` function can be customized to perform operations on the powers and ideas text.
-// Replace the `policiesUrl` and `powersAndIdeasUrl` variables with the correct URLs for your files.
