@@ -22,8 +22,8 @@ fetch(url)
             select.appendChild(option);
         }
 
-        // Call the function to load and execute the local.js file
-        loadLocalScript();
+        // Call the displayIdeaGroupDetails function after the ideas are loaded
+        displayIdeaGroupDetails();
     })
     .catch(error => console.error('Error:', error));
 
@@ -64,21 +64,14 @@ function displayIdeaGroupDetails() {
             // Remove the "ai_will_do" part
             details = details.replace(/ai_will_do[\s\S]*/, '');
 
-            // Remove curly brackets.
+            // Remove curly brackets
             details = details.replace(/[\{\}]/g, '');
+
+            // Replace specific case-sensitive words with their replacements
+            details = replaceWords(details);
 
             // Display the details
             document.getElementById('idea-group-details').textContent = details;
         })
         .catch(error => console.error('Error:', error));
-}
-
-function loadLocalScript() {
-    var script = document.createElement('script');
-    script.src = 'local.js';
-    script.onload = function() {
-        // After local.js has finished loading, call displayIdeaGroupDetails()
-        displayIdeaGroupDetails();
-    };
-    document.head.appendChild(script);
 }
