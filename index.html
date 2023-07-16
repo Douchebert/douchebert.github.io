@@ -2,65 +2,41 @@
 <html>
 <head>
     <style>
-        .column {
-            float: left;
-            width: 33.33%;
-            padding: 5px;
-        }
-
-        /* Clear floats after rows */ 
-        .row::after {
-            content: "";
-            clear: both;
-            display: table;
-        }
-
-        .idea-group {
-            display: flex;
-            align-items: center;
-        }
-
-        .idea-group input[type="checkbox"] {
-            margin-right: 10px;
-        }
+        /* Add your styles here */
     </style>
 </head>
 <body>
 
-<div class="row">
-    <div class="column">
-        <div class="idea-group">
-            <input type="checkbox" id="idea-group-1">
-            <label for="idea-group-1">Idea Group 1</label>
-        </div>
-        <!-- Repeat for other idea groups in the first column -->
-    </div>
-    <div class="column">
-        <div class="idea-group">
-            <input type="checkbox" id="idea-group-2">
-            <label for="idea-group-2">Idea Group 2</label>
-        </div>
-        <!-- Repeat for other idea groups in the second column -->
-    </div>
-    <div class="column">
-        <div class="idea-group">
-            <input type="checkbox" id="idea-group-3">
-            <label for="idea-group-3">Idea Group 3</label>
-        </div>
-        <!-- Repeat for other idea groups in the third column -->
-    </div>
-</div>
+<select id="idea-group-select">
+    <!-- Options will be added here by JavaScript -->
+</select>
 
 <script>
-    // Get the checkbox elements
-    var checkbox1 = document.getElementById('idea-group-1');
-    var checkbox2 = document.getElementById('idea-group-2');
-    var checkbox3 = document.getElementById('idea-group-3');
+    // URL of the ideas file
+    var url = 'https://douchebert.github.io/Ideas/00_basic_ideas.txt';  // Replace with the actual URL
 
-    // Check if the checkboxes are checked
-    console.log('Idea Group 1 is checked:', checkbox1.checked);
-    console.log('Idea Group 2 is checked:', checkbox2.checked);
-    console.log('Idea Group 3 is checked:', checkbox3.checked);
+    // Fetch the file
+    fetch(url)
+        .then(response => response.text())
+        .then(text => {
+            // Split the text into lines
+            var lines = text.split('\n');
+
+            // Filter the lines to get the idea group names
+            var ideaGroups = lines.filter(line => line.includes('_ideas = {')).map(line => line.replace(' = {', ''));
+
+            // Get the select element
+            var select = document.getElementById('idea-group-select');
+
+            // Add an option for each idea group
+            for (var i = 0; i < ideaGroups.length; i++) {
+                var option = document.createElement('option');
+                option.value = ideaGroups[i];
+                option.text = ideaGroups[i];
+                select.appendChild(option);
+            }
+        })
+        .catch(error => console.error('Error:', error));
 </script>
 
 </body>
