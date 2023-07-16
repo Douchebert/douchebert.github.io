@@ -6,6 +6,7 @@ function replaceWords(text) {
   text = text.replace(/\bADM\b/g, "Administrative");
   text = text.replace(/\bDIP\b/g, "Diplomatic");
   text = text.replace(/\bMIL\b/g, "Military");
+  text = text.replace(replacePattern, "$2");
   return text;
 }
 
@@ -15,22 +16,10 @@ function loadPoliciesFile() {
   fetch(policiesUrl)
     .then(response => response.text())
     .then(text => {
-      var processedText = processPoliciesText(text);
+      var processedText = replaceWords(text);
       console.log(processedText);
     })
     .catch(error => console.error('Error:', error));
-}
-
-// Function to process the policies text
-function processPoliciesText(text) {
-  // Apply the standardized replacements
-  text = text.replace(replacePattern, '$2');
-
-  // Process the policies text here
-  // You can apply any additional replacements or transformations to the text
-
-  // Return the processed text
-  return text;
 }
 
 // Function to load and process the powers and ideas file
@@ -39,22 +28,10 @@ function loadPowersAndIdeasFile() {
   fetch(powersAndIdeasUrl)
     .then(response => response.text())
     .then(text => {
-      var processedText = processPowersAndIdeasText(text);
+      var processedText = replaceWords(text);
       console.log(processedText);
     })
     .catch(error => console.error('Error:', error));
-}
-
-// Function to process the powers and ideas text
-function processPowersAndIdeasText(text) {
-  // Apply the standardized replacements
-  text = text.replace(replacePattern, '$2');
-
-  // Process the powers and ideas text here
-  // You can apply any additional replacements or transformations to the text
-
-  // Return the processed text
-  return text;
 }
 
 // Call the function to load and process the policies file
