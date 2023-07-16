@@ -60,6 +60,9 @@ function displayIdeaGroupDetails() {
 
             // Remove the "ai_will_do" part
             details = details.replace(/ai_will_do[\s\S]*/, '');
+			
+			// Remove curly brackets.
+			details = details.replace(/[\{\}]/g, '');
 
             // Display the details
             document.getElementById('idea-group-details').textContent = details;
