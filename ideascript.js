@@ -1,30 +1,30 @@
-// URL of the ideas file
-var url = 'https://douchebert.github.io/Ideas/00_basic_ideas.txt'; 
+    // URL of the ideas file
+    var url = 'https://douchebert.github.io/Ideas/00_basic_ideas.txt';  // Replace with the actual URL
 
-// Fetch the file
-fetch(url)
-    .then(response => response.text())
-    .then(text => {
-        // Split the text into lines
-        var lines = text.split('\n');
+    // Fetch the file
+    fetch(url)
+        .then(response => response.text())
+        .then(text => {
+            // Split the text into lines
+            var lines = text.split('\n');
 
-        // Filter the lines to get the idea group names
-        var ideaGroups = lines.filter(line => line.includes('_ideas = {')).map(line => line.replace(' = {', ''));
+            // Filter the lines to get the idea group names
+            var ideaGroups = lines.filter(line => line.includes('_ideas = {')).map(line => line.replace(' = {', ''));
 
-        // Get the select element
-        var select = document.getElementById('idea-group-select');
+            // Get the select element
+            var select = document.getElementById('idea-group-select');
 
-        // Add an option for each idea group
-        for (var i = 0; i < ideaGroups.length; i++) {
-            var option = document.createElement('option');
-            option.value = ideaGroups[i];
-            option.text = ideaGroups[i];
-            select.appendChild(option);
-        }
-    })
-    .catch(error => console.error('Error:', error));
+            // Add an option for each idea group
+            for (var i = 0; i < ideaGroups.length; i++) {
+                var option = document.createElement('option');
+                option.value = ideaGroups[i];
+                option.text = ideaGroups[i];
+                select.appendChild(option);
+            }
+        })
+        .catch(error => console.error('Error:', error));
 
-function displayIdeaGroupDetails(ideaGroupName) {
+    function displayIdeaGroupDetails(ideaGroupName) {
     // Fetch the file again
     fetch(url)
         .then(response => response.text())
@@ -56,14 +56,10 @@ function displayIdeaGroupDetails(ideaGroupName) {
             var details = text.slice(start, i + 1);
 
             // Remove the "ai_will_do" part
-            details = removeAIWillDo(details);
+            details = details.replace(/ai_will_do[\s\S]*/, '');
 
             // Display the details
             document.getElementById('idea-group-details').textContent = details;
         })
         .catch(error => console.error('Error:', error));
-}
-
-function removeAIWillDo(details) {
-    return details.replace(/ai_will_do[\s\S]*/, '');
 }
