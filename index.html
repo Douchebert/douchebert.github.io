@@ -7,6 +7,8 @@
 </head>
 <body>
 
+<h1>Version 0.004</h1>
+
 <select id="idea-group-select" onchange="displayIdeaGroupDetails(this.value)">
     <!-- Options will be added here by JavaScript -->
 </select>
@@ -19,52 +21,41 @@
     // URL of the ideas file
     var url = 'https://douchebert.github.io/Ideas/00_basic_ideas.txt';  // Replace with the actual URL
 
-
     // Fetch the file
     fetch(url)
         .then(response => response.text())
         .then(text => {
-            // Split the text into lines
-            var lines = text.split('\n');
+            // Split the text into idea groups
+            var ideaGroups = text.split(/\n\n(?=[a-z_]+_ideas = {)/);
 
-            // Filter the lines to get the idea group names
-            var ideaGroups = lines.filter(line => line.includes('_ideas = {')).map(line => line.replace(' = {', ''));
+            // Get the idea group names
+            var ideaGroupNames = ideaGroups.map(group => group.match(/[a-z_]+(?= = {)/)[0]);
 
             // Get the select element
             var select = document.getElementById('idea-group-select');
 
             // Add an option for each idea group
-            for (var i = 0; i < ideaGroups.length; i++) {
+            for (var i = 0; i < ideaGroupNames.length; i++) {
                 var option = document.createElement('option');
-                option.value = ideaGroups[i];
-                option.text = ideaGroups[i];
+                option.value = ideaGroupNames[i];
+                option.text = ideaGroupNames[i];
                 select.appendChild(option);
             }
+
+            // Store the idea groups in a global variable for later use
+            window.ideaGroups = ideaGroups;
         })
         .catch(error => console.error('Error:', error));
 
     function displayIdeaGroupDetails(ideaGroupName) {
-        // Fetch the file again
-        fetch(url)
-            .then(response => response.text())
-            .then(text => {
-                // Find the start of the selected idea group's details
-                var start = text.indexOf(ideaGroupName + ' = {');
+        // Find the selected idea group's details
+        var details = window.ideaGroups.find(group => group.startsWith(ideaGroupName));
 
-                // Use a regular expression to find the end of the selected idea group's details
-                var endMatch = text.slice(start).match(/\n\n[^a-z_]/);
-                var end = endMatch ? start + endMatch.index : text.length;
+        // Remove the "ai_will_do" part
+        details = details.replace(/ai_will_do = {[^}]*}/, '');
 
-                // Extract the idea group's details
-                var details = text.slice(start, end);
-
-                // Remove the "ai_will_do" part
-                details = details.replace(/ai_will_do = {[^}]*}/, '');
-
-                // Display the details
-                document.getElementById('idea-group-details').textContent = details;
-            })
-            .catch(error => console.error('Error:', error));
+        // Display the details
+        document.getElementById('idea-group-details').textContent = details;
     }
 </script>
 
