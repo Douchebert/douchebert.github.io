@@ -27,9 +27,13 @@ function replaceWords(text) {
   // Replace other strings based on the data from the YAML files
   for (var key in window.replacements) {
     var value = window.replacements[key];
-    var regex = new RegExp('\\b' + key + '\\b', 'g');
-    text = text.replace(regex, value);
+    // Check if the value is a string
+    if (typeof value === 'string') {
+      var regex = new RegExp('\\b' + key + '\\b', 'g');
+      text = text.replace(regex, value);
+    }
   }
 
   return text;
 }
+
