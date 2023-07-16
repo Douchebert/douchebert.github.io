@@ -29,13 +29,18 @@ function parseYamlText(text) {
         var key = parts[0].trim();
         var value = parts[1] ? parts[1].trim() : '';
 
+        // Remove leading '0 ' from the key
+        if (key.startsWith('0 ')) {
+            key = key.substring(2);
+        }
+
         data[key] = value;
     }
 
     return data;
 }
 
-// Replace specific case-sensitive words with their replacements
+/// Replace specific case-sensitive words with their replacements
 function replaceWords(text) {
   text = text.replace(/\bADM\b/g, "Administrative");
   text = text.replace(/\bDIP\b/g, "Diplomatic");
@@ -46,10 +51,11 @@ function replaceWords(text) {
     var value = window.replacements[key];
     // Check if the value is a string
     if (typeof value === 'string') {
-      var regex = new RegExp('\\b' + key + '\\b', 'g');
+      var regex = new RegExp('\\b' + key.replace(/_/g, '\\_') + '\\b', 'g');
       text = text.replace(regex, value);
     }
   }
 
   return text;
 }
+
