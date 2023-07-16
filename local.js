@@ -1,5 +1,6 @@
 // Standardized regex pattern for replacements
-var replacePattern = /([a-zA-Z_]+):0\s+"([^"]+)"/gi;
+var replacePattern = /([a-zA-Z_]+):0\s+"([^"]+)"|([a-zA-Z_]+):0\s+([^"]+)(?=\s*:0)/gi;
+
 
 // Replace specific case-sensitive words with their replacements
 function replaceWords(text) {
