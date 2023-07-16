@@ -1,5 +1,5 @@
 // URL of the ideas file
-var url = 'Ideas/00_basic_ideas.txt';
+var url = '00_basic_ideas.txt';
 
 // Fetch the file
 fetch(url)
