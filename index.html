@@ -7,7 +7,7 @@
 </head>
 <body>
 
-<h1>Version 0.004</h1>
+<h1>Version 0.005</h1>
 
 <select id="idea-group-select" onchange="displayIdeaGroupDetails(this.value)">
     <!-- Options will be added here by JavaScript -->
@@ -19,12 +19,15 @@
 
 <script>
     // URL of the ideas file
-    var url = 'https://douchebert.github.io/Ideas/00_basic_ideas.txt';  // Replace with the actual URL
+    var url = 'https://douchebert.github.io/Ideas/00_basic_ideas.txt';  // The actual URL
 
     // Fetch the file
     fetch(url)
         .then(response => response.text())
         .then(text => {
+            // Log the entire content of the text file to the console
+            console.log(text);
+
             // Split the text into idea groups
             var ideaGroups = text.split(/\n\n(?=[a-z_]+_ideas = {)/);
 
