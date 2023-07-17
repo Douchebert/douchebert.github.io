@@ -31,15 +31,15 @@ fetch('local.txt')
         for (var line of lines) {
             // Split the line into the key and value
             var parts = line.split(':');
-            if (parts.length >= 2) {
-                var key = parts[0].trim();  // Remove potential leading/trailing whitespace
-                var value = parts.slice(1).join(':').trim();  // Join all parts except the key
-                // Remove potential " at start and end
-                if (value.startsWith('"')) value = value.slice(1);
-                if (value.endsWith('"')) value = value.slice(0, -1);
+            if (parts.length === 2) {
+                var key = parts[0].trim();  // Remove spaces
+                var value = parts[1].trim();  // Remove spaces
                 
-                // Store the replacement in the global object
-                replacements[key] = value;
+                // Extract everything inside the quotes to get the true value
+                var trueValue = value.match(/"([^"]+)"/);
+                if (trueValue) {
+                    replacements[key] = trueValue[1];
+                }
             }
         }
     })
