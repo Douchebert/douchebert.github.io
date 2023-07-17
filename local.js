@@ -53,19 +53,20 @@ function replaceWords(text) {
   text = text.replace(/\bDIP\b/g, "Diplomatic");
   text = text.replace(/\bMIL\b/g, "Military");
 
-  // Go through each replacement
-  for (var key in replacements) {
-      // Replace all occurrences of the key with its corresponding value
-      var regex = new RegExp('\\b' + key + '\\b', 'gi');  // 'i' for case-insensitive
-      text = text.replace(regex, replacements[key]);
-  }
-
   // Replace special cases
   for (var key in specialCases) {
     var regex = new RegExp('\\b' + key + '\\b', 'gi');
     text = text.replace(regex, specialCases[key]);
   }
 
+  // Go through each replacement
+  for (var key in replacements) {
+    if (!specialCases[key]) { // Check if the key is not a special case
+      // Replace all occurrences of the key with its corresponding value
+      var regex = new RegExp('\\b' + key + '\\b', 'gi');  // 'i' for case-insensitive
+      text = text.replace(regex, replacements[key]);
+    }
+  }
+
   return text;
 }
-
