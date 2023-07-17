@@ -41,9 +41,11 @@ function displayIdeaGroupDetails() {
             // Extract the idea group's details
             var details = extractDetails(text, start);
 
-            // Manual removes.
-            details = removeSection(details, "ai_will_do");
-            details = removeSection(details, "trigger");
+            // Define sections to remove
+            var sectionsToRemove = ["ai_will_do", "trigger"];
+
+            // Remove the sections
+            details = removeSections(details, sectionsToRemove);
 
             // Replace specific case-sensitive words with their replacements
             details = replaceWords(details);
@@ -56,34 +58,45 @@ function displayIdeaGroupDetails() {
 }
 
 // This function will remove a section starting from a keyword
-function removeSection(text, keyword) {
-    var start = text.indexOf(keyword);
-    if (start !== -1) {
-        var end = start;
-        var openBraces = 0;
-        var closeBraces = 0;
+function removeSections(text, sectionsToRemove) {
+    // Process each section to remove
+    for (var j = 0; j < sectionsToRemove.length; j++) {
+        var sectionName = sectionsToRemove[j];
 
-        while (end < text.length) {
-            if (text[end] === '{') {
-                openBraces++;
-            } else if (text[end] === '}') {
-                closeBraces++;
+        // Find the start of the section
+        var start = text.indexOf(sectionName + ' = {');
+
+        while (start !== -1) {
+            // Count the number of opening and closing curly braces
+            var openingBraceCount = 0;
+            var closingBraceCount = 0;
+            var i = start + sectionName.length + 3; // Start after the section name and ' = {'
+
+            while (i < text.length) {
+                if (text[i] === '{') {
+                    openingBraceCount++;
+                } else if (text[i] === '}') {
+                    closingBraceCount++;
+                }
+
+                // Check if the section has ended
+                if (openingBraceCount > 0 && openingBraceCount === closingBraceCount) {
+                    break;
+                }
+
+                i++;
             }
 
-            // Check if we've reached the end of the section
-            if (openBraces > 0 && openBraces === closeBraces) {
-                break;
-            }
-
-            end++;
+            // Remove the section
+            text = text.slice(0, start) + text.slice(i + 1);
+            
+            // Find the next occurrence of the section
+            start = text.indexOf(sectionName + ' = {');
         }
-
-        text = text.substring(0, start) + text.substring(end + 1);
     }
 
     return text;
 }
-
 
 // This function extracts the idea group's details
 function extractDetails(text, start) {
