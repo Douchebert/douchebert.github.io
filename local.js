@@ -1,61 +1,37 @@
-// Fetch the first text file
-fetch('/Policies/policies_l_english.yml')
+// Global object to store the mappings
+var replacements = {};
+
+// Fetch the local.txt file and store the replacements in the global object
+fetch('local.txt')
     .then(response => response.text())
-    .then(text1 => {
-        // Parse the text into a JavaScript object
-        var data1 = parseYamlText(text1);
-
-        // Fetch the second text file
-        return fetch('/Policies/powers_and_ideas_l_english.yml')
-            .then(response => response.text())
-            .then(text2 => {
-                // Parse the text into a JavaScript object
-                var data2 = parseYamlText(text2);
-
-                // Combine the data from the two files
-                window.replacements = Object.assign({}, data1, data2);
-            });
+    .then(text => {
+        // Split the text into lines
+        var lines = text.split('\n');
+        
+        // Process each line
+        for (var line of lines) {
+            // Split the line into the key and value
+            var parts = line.split(':0 ');
+            if (parts.length === 2) {
+                // Store the replacement in the global object
+                replacements[parts[0]] = parts[1].replace(/"/g, '');
+            }
+        }
     })
     .catch(error => console.error('Error:', error));
 
-// Parse YAML text into a JavaScript object
-function parseYamlText(text) {
-    var lines = text.split('\n');
-    var data = {};
-
-    for (var i = 0; i < lines.length; i++) {
-        var line = lines[i];
-        var parts = line.split(':');
-        var key = parts[0].trim();
-        var value = parts[1] ? parts[1].trim() : '';
-
-        // Remove leading '0 ' from the key
-        if (key.startsWith('0 ')) {
-            key = key.substring(2);
-        }
-
-        data[key] = value;
-    }
-
-    return data;
-}
-
-/// Replace specific case-sensitive words with their replacements
+// Function to replace specific case-sensitive words with their replacements
 function replaceWords(text) {
   text = text.replace(/\bADM\b/g, "Administrative");
   text = text.replace(/\bDIP\b/g, "Diplomatic");
   text = text.replace(/\bMIL\b/g, "Military");
 
-  // Replace other strings based on the data from the YAML files
-  for (var key in window.replacements) {
-    var value = window.replacements[key];
-    // Check if the value is a string
-    if (typeof value === 'string') {
-      var regex = new RegExp('\\b' + key.replace(/_/g, '\\_') + '\\b', 'g');
-      text = text.replace(regex, value);
-    }
+  // Go through each replacement
+  for (var key in replacements) {
+      // Replace all occurrences of the key with its corresponding value
+      var regex = new RegExp('\\b' + key + '\\b', 'g');
+      text = text.replace(regex, replacements[key]);
   }
 
   return text;
 }
-
