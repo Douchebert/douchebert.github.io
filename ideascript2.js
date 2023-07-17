@@ -50,39 +50,12 @@ function displayIdeaGroupDetails() {
             // Replace specific case-sensitive words with their replacements
             details = replaceWords(details);
 
-            // New presentation
-            var presentation = {};
-            var splitDetails = details.split("{");
-            
-            // Get the title and category
-            presentation.title = splitDetails[0].split('=')[0].trim();
-            presentation.category = splitDetails[0].split('=')[1].trim();
-            
-            // Get the bonus and ideas
-            var bonusAndIdeas = splitDetails[1].split('bonus = {')[1].split(' }');
-            presentation.bonus = bonusAndIdeas[0];
-            presentation.ideas = bonusAndIdeas.slice(1, -1);
-            
-            // Create HTML
-            var html = `<h2>${presentation.title}</h2><p>Category = ${presentation.category}</p>`;
-            
-            html += '<h3>Bonus</h3>';
-            html += `<p>${presentation.bonus}</p>`;
-            
-            for (var i = 0; i < presentation.ideas.length; i++) {
-                var ideaName = presentation.ideas[i].split(' = {')[0].trim();
-                var ideaDetails = presentation.ideas[i].split(' = {')[1].trim();
-                
-                html += `<h3>${ideaName}</h3>`;
-                html += `<p>${ideaDetails}</p>`;
-            }
-            
             // Display the details
-            document.getElementById('idea-group-details').innerHTML = html;
+            document.getElementById('idea-group-details').textContent = details;
+
         })
         .catch(error => console.error('Error:', error));
 }
-
 
 // This function will remove a section starting from a keyword
 function removeSections(text, sectionsToRemove) {
