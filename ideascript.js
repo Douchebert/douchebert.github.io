@@ -59,15 +59,23 @@ function displayIdeaGroupDetails() {
 function removeSection(text, keyword) {
     var start = text.indexOf(keyword);
     if (start !== -1) {
-        var end = text.indexOf('}', start);
-        var sub = text.substring(start, end + 1);
-        var openBraces = (sub.match(/{/g) || []).length;
-        var closeBraces = (sub.match(/}/g) || []).length;
+        var end = start;
+        var openBraces = 0;
+        var closeBraces = 0;
 
-        while (openBraces !== closeBraces) {
-            end = text.indexOf('}', end + 1);
-            sub = text.substring(start, end + 1);
-            closeBraces = (sub.match(/}/g) || []).length;
+        while (end < text.length) {
+            if (text[end] === '{') {
+                openBraces++;
+            } else if (text[end] === '}') {
+                closeBraces++;
+            }
+
+            // Check if we've reached the end of the section
+            if (openBraces > 0 && openBraces === closeBraces) {
+                break;
+            }
+
+            end++;
         }
 
         text = text.substring(0, start) + text.substring(end + 1);
@@ -75,6 +83,7 @@ function removeSection(text, keyword) {
 
     return text;
 }
+
 
 // This function extracts the idea group's details
 function extractDetails(text, start) {
