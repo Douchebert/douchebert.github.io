@@ -19,12 +19,15 @@ var specialCases = {
     'vaisyas_loyalty_modifier': 'Vaisyas Loyalty Equilibrium',
     'jains_loyalty_modifier': 'Jains Loyalty Equilibrium',
 	'diplomats': 'Diplomats',
-	'cav_to_inf_ratio': 'Cavalry To Infantry Ratio',
+	'cav_to_inf_ratio': 'Cavalry to Infantry Ratio',
 	'army_tradition_decay': 'Yearly Army Tradition Decay',
 	'navy_tradition_decay': 'Yearly Navy Tradition Decay',
-	'fabricate_claims_cost': 'Cost To Fabricate Claims',
+	'fabricate_claims_cost': 'Cost to Fabricate Claims',
 	'global_autonomy': 'Monthly Autonomy Change',
 	'merchants': 'Merchants',
+	'free_merchants': 'Free Merchants',
+	'global_regiment_cost': 'Regiment cost',
+	'fire_damage_received ': 'Fire damage received', 
 };
 
 // Fetch the local.txt file and store the replacements in the global object
