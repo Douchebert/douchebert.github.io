@@ -29,7 +29,7 @@ function replaceWords(text) {
   // Go through each replacement
   for (var key in replacements) {
       // Replace all occurrences of the key with its corresponding value
-      var regex = new RegExp('\\b' + key + '\\b', 'g');
+      var regex = new RegExp('\\b' + key + '\\b', 'gi');
       text = text.replace(regex, replacements[key]);
   }
 
