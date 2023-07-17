@@ -38,34 +38,12 @@ function displayIdeaGroupDetails() {
             // Find the start of the selected idea group's details
             var start = text.indexOf(ideaGroupName + ' = {');
 
-            // Count the number of opening and closing curly braces
-            var openingBraceCount = 0;
-            var closingBraceCount = 0;
-            var i = start;
-
-            while (i < text.length) {
-                if (text[i] === '{') {
-                    openingBraceCount++;
-                } else if (text[i] === '}') {
-                    closingBraceCount++;
-                }
-
-                // Check if the idea group's details have ended
-                if (openingBraceCount > 0 && openingBraceCount === closingBraceCount) {
-                    break;
-                }
-
-                i++;
-            }
-
             // Extract the idea group's details
-            var details = text.slice(start, i + 1);
+            var details = extractDetails(text, start);
 
-            // Remove the "ai_will_do" part
-            details = details.replace(/ai_will_do[\s\S]*/, '');
-
-            // Remove curly brackets - commented out until I can figure out groupings.
-            //details = details.replace(/[\{\}]/g, '');
+            // Manual removes.
+            details = removeSection(details, "ai_will_do");
+            details = removeSection(details, "trigger");
 
             // Replace specific case-sensitive words with their replacements
             details = replaceWords(details);
@@ -75,4 +53,50 @@ function displayIdeaGroupDetails() {
 
         })
         .catch(error => console.error('Error:', error));
+}
+
+// This function will remove a section starting from a keyword
+function removeSection(text, keyword) {
+    var start = text.indexOf(keyword);
+    if (start !== -1) {
+        var end = text.indexOf('}', start);
+        var sub = text.substring(start, end + 1);
+        var openBraces = (sub.match(/{/g) || []).length;
+        var closeBraces = (sub.match(/}/g) || []).length;
+
+        while (openBraces !== closeBraces) {
+            end = text.indexOf('}', end + 1);
+            sub = text.substring(start, end + 1);
+            closeBraces = (sub.match(/}/g) || []).length;
+        }
+
+        text = text.substring(0, start) + text.substring(end + 1);
+    }
+
+    return text;
+}
+
+// This function extracts the idea group's details
+function extractDetails(text, start) {
+    var openingBraceCount = 0;
+    var closingBraceCount = 0;
+    var i = start;
+
+    while (i < text.length) {
+        if (text[i] === '{') {
+            openingBraceCount++;
+        } else if (text[i] === '}') {
+            closingBraceCount++;
+        }
+
+        // Check if the idea group's details have ended
+        if (openingBraceCount > 0 && openingBraceCount === closingBraceCount) {
+            break;
+        }
+
+        i++;
+    }
+
+    // Extract the idea group's details
+    return text.slice(start, i + 1);
 }
